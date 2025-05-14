@@ -1,79 +1,165 @@
 #include <stdio.h>
 
-int main() {
-    //informação do tabuleiro e dos navios
-    int tamtabuleiro = 10, tamanhonavio = 3;
-    int agua = 0, navio = 3;
+// agora usando o #define para os valores e tamanhos
 
-    int tabuleiro[10][10];
+#define tamtabuleiro 10
+#define tamnavio 3
+#define agua 0
+#define navio 3
+
+int main (){
+// informações do tabuleiro
+    int tabuleiro [tamtabuleiro][tamtabuleiro];
     int i, j;
 
-    // Inicializa o tabuleiro com água (agua é representado como 0)
-    for (i = 0; i < tamtabuleiro; i++) {
-        for (j = 0; j < tamtabuleiro; j++) {
-            tabuleiro[i][j] = agua;
+
+
+    // iniciando o tabuleiro
+   for ( i = 0; i < tamtabuleiro; i++)
+   {
+   for ( j = 0; j < tamtabuleiro; j++)
+   {
+    tabuleiro[i][j] = agua;
+   }
+   
+   }
+  // variaveis de controle para validação
+  int posicao, l, c;
+  
+  
+  //navio horizontal
+
+  int linhahorizontal = 2, colunahorizontal = 4;
+  posicao = 1;
+
+    for ( i = 0; i < tamnavio; i++)
+    {
+        c = colunahorizontal + i;
+        if (c >= tamtabuleiro || tabuleiro[linhahorizontal][c] != agua)
+        {
+            posicao = 0;
+            break;
         }
+        
     }
 
-    // Coordenadas iniciais dos navios
-    int linhahorizontal = 2, colunahorizontal = 4;
+    if (posicao)
+    {
+       for ( i = 0; i < tamnavio; i++)
+       {
+         tabuleiro[linhahorizontal][colunahorizontal + i] = navio;
+        
+       }
+       
+    }else
+    {
+        printf("Não foi possivel posicionar o navio horizontal.\n");
+    }
+    
+    //Navio Vertical
     int linhavertical = 5, colunavertical = 1;
-    int coloquehorizontal = 1, coloquevertical = 1;
+    posicao = 1;
 
-    // Verificação do navio horizontal
-    for (i = 0; i < tamanhonavio; i++) {
-        int c = colunahorizontal + i;
-        if (c >= tamtabuleiro || tabuleiro[linhahorizontal][c] != agua) {
-            coloquehorizontal = 0;
+    for ( i = 0; i < tamnavio; i++)
+    {
+        l = linhavertical + i;
+        if (l >= tamtabuleiro || tabuleiro[l][colunavertical] != agua)
+
+        {
+           posicao = 0;
+           break;
+        }
+        
+    }
+    if (posicao)
+    {
+        for ( i = 0; i < tamnavio; i++)
+        {
+           tabuleiro[linhavertical + i][colunavertical] = navio;
+        }
+        
+    }else
+    {
+        printf("Não foi possivel posicionar o navio vertical. \n");
+    }
+
+    // navio diagonal 1
+
+    int linhadiagonal1 = 0, colunadiagonal1 = 0;
+    posicao = 1;
+
+    for ( i = 0; i < tamnavio; i++)
+    {
+        l = linhadiagonal1 + i;
+        c = colunadiagonal1 + i;
+        if (l >= tamtabuleiro || c >= tamtabuleiro || tabuleiro[l][c] != agua)
+        {
+            posicao = 0;
             break;
         }
+        
     }
-
-    // Coloca o navio horizontal se possível
-    if (coloquehorizontal) {
-        for (i = 0; i < tamanhonavio; i++) {
-            int c = colunahorizontal + i;
-            tabuleiro[linhahorizontal][c] = navio;
+    
+    if (posicao)
+    {
+        for ( i = 0; i < tamnavio; i++)
+        {
+           tabuleiro[linhadiagonal1 + i][colunadiagonal1 + i] = navio;
         }
-    } else {
-        printf("Não foi possível posicionar o navio horizontal.\n");
+        
+    } else
+    {
+        printf("Não foi possivel posicionar o navio diagonal 1.\n");
     }
 
-    // Verificação do navio vertical
-    for (i = 0; i < tamanhonavio; i++) {
-        int l = linhavertical + i;
-        if (l >= tamtabuleiro || tabuleiro[l][colunavertical] != agua) {
-            coloquevertical = 0;
+    // navio diagonal 2
+    int linhadiagonal2 = 0, colunadiagonal2 = 9;
+    posicao = 1;
+    for ( i = 0; i < tamnavio; i++)
+    {
+        l = linhadiagonal2 + i;
+        c = colunadiagonal2 - i;
+        if (l >= tamtabuleiro || c < 0 || tabuleiro[l][c] != agua)
+        {
+            posicao = 0;
             break;
         }
+        
     }
-
-    // Coloca o navio vertical se possível
-    if (coloquevertical) {
-        for (i = 0; i < tamanhonavio; i++) {
-            int l = linhavertical + i;
-            tabuleiro[l][colunavertical] = navio;
+    if (posicao)
+    {
+        for ( i = 0; i < tamnavio; i++)
+        {
+           tabuleiro[linhadiagonal2 + i][colunadiagonal2 - i] = navio;
         }
-    } else {
-        printf("Não foi possível posicionar o navio vertical.\n");
+        
+    }else
+    {
+        printf("Não foi possivel posicionar o navio diagonal 2 .\n");
     }
 
-    // Exibe o tabuleiro
-    printf("\nTabuleiro Batalha Naval:\n");
-    printf("\n   ");
+    // exibir o tabuleiro
+    printf("\nTabuleiro Batalha Naval:\n\n");
+      for ( i = 0; i < tamtabuleiro; i++)
+      {
+       for ( j = 0; j < tamtabuleiro; j++)
+       {
+       printf("%d ", tabuleiro[i][j]);
+       }
+       printf("\n");
+      }
+      
+    
+    
+    
+    
+    
+    
+    
 
-    for (char letra = 'A'; letra < 'A' + tamtabuleiro; letra++) {//Para colocar as letras na coluna horizontal
-        printf("%c ", letra);
-    }
-    printf("\n");
 
-    for (i = 0; i < tamtabuleiro; i++) {
-         printf("%2d ", i + 1);  // para colocar os numeros na coluna vertical
-        for (j = 0; j < tamtabuleiro; j++) {
-            printf("%d ", tabuleiro[i][j]);
-        }
-        printf("\n");
-    }
 
-    return 0;
+
+return 0;
+
 }
