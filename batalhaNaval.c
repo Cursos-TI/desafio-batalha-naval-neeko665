@@ -8,7 +8,7 @@
 #define navio 3
 
 int main (){
-// informações do tabuleiro
+
     int tabuleiro [tamtabuleiro][tamtabuleiro];
     int i, j;
 
@@ -113,7 +113,7 @@ int main (){
     }
 
     // navio diagonal 2
-    int linhadiagonal2 = 0, colunadiagonal2 = 9;
+    int linhadiagonal2 = 4, colunadiagonal2 = 5;
     posicao = 1;
     for ( i = 0; i < tamnavio; i++)
     {
@@ -140,24 +140,24 @@ int main (){
 
     // exibir o tabuleiro
     printf("\nTabuleiro Batalha Naval:\n\n");
-      for ( i = 0; i < tamtabuleiro; i++)
-      {
+     printf("   "); // 3 espaços para alinhar com os números (2 dígitos + espaço extra)
+for (char letra = 'A'; letra < 'A' + tamtabuleiro; letra++) {
+    printf("%c ", letra);
+}
+printf("\n");
+
+
+       for ( i = 0; i < tamtabuleiro; i++)
+      { printf("%2d ", i + 1);  // para colocar os numeros na coluna vertical
        for ( j = 0; j < tamtabuleiro; j++)
        {
        printf("%d ", tabuleiro[i][j]);
        }
        printf("\n");
+
+
       }
       
-    
-    
-    
-    
-    
-    
-    
-
-
 
 
 return 0;
