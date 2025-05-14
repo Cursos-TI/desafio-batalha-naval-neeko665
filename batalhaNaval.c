@@ -1,6 +1,7 @@
 #include <stdio.h>
 
 int main() {
+    //informação do tabuleiro e dos navios
     int tamtabuleiro = 10, tamanhonavio = 3;
     int agua = 0, navio = 3;
 
