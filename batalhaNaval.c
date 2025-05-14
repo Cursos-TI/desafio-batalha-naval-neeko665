@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <stdlib.h>
 
 // agora usando o #define para os valores e tamanhos
 
@@ -6,11 +7,83 @@
 #define tamnavio 3
 #define agua 0
 #define navio 3
+#define habilidade 5
+#define tamanhoHabilidade 5  // tamanho fixo das matrizes de habilidade (5x5)
+#define tamanhoOctaedro 3
+
+
+
+void exibirTabuleiro(int tabuleiro[tamtabuleiro][tamtabuleiro]) {
+    printf("\nTabuleiro Batalha Naval com Habilidades:\n\n");
+    printf("   ");
+    for (char letra = 'A'; letra < 'A' + tamtabuleiro; letra++) {
+        printf("%c ", letra);
+    }
+    printf("\n");
+
+    for (int i = 0; i < tamtabuleiro; i++) {
+        printf("%2d ", i + 1);
+        for (int j = 0; j < tamtabuleiro; j++) {
+            if (tabuleiro[i][j] == agua) {
+                printf("0 ");  // água
+            } else if (tabuleiro[i][j] == navio) {
+                printf("3 ");  // navio
+            } else if (tabuleiro[i][j] == habilidade) {
+                printf("5 ");  // habilidade
+            }
+        }
+        printf("\n");
+    }
+}
+
+// Função para aplicar a matriz de habilidade no tabuleiro
+void aplicarHabilidade(int tabuleiro[tamtabuleiro][tamtabuleiro], int habilidadeMat[tamanhoHabilidade][tamanhoHabilidade], int origemLinha, int origemColuna) {
+    int offset = tamanhoHabilidade / 2;
+
+    for (int i = 0; i < tamanhoHabilidade; i++) {
+        for (int j = 0; j < tamanhoHabilidade; j++) {
+            if (habilidadeMat[i][j] == 1) {
+                int linhaTab = origemLinha - offset + i;
+                int colunaTab = origemColuna - offset + j;
+
+                if (linhaTab >= 0 && linhaTab < tamtabuleiro && colunaTab >= 0 && colunaTab < tamtabuleiro) {
+                    if (tabuleiro[linhaTab][colunaTab] == agua) {
+                        tabuleiro[linhaTab][colunaTab] = habilidade;
+                    }
+                }
+            }
+        }
+    }
+}
+
+void aplicarHabilidade3x3(int tabuleiro[tamtabuleiro][tamtabuleiro], int habilidadeMat[tamanhoOctaedro][tamanhoOctaedro], int origemLinha, int origemColuna) {
+    int offset = tamanhoOctaedro / 2;
+
+    for (int i = 0; i < tamanhoOctaedro; i++) {
+        for (int j = 0; j < tamanhoOctaedro; j++) {
+            if (habilidadeMat[i][j] == 1) {
+                int linhaTab = origemLinha - offset + i;
+                int colunaTab = origemColuna - offset + j;
+
+                if (linhaTab >= 0 && linhaTab < tamtabuleiro && colunaTab >= 0 && colunaTab < tamtabuleiro) {
+                    if (tabuleiro[linhaTab][colunaTab] == agua) {
+                        tabuleiro[linhaTab][colunaTab] = habilidade;
+                    }
+                }
+            }
+        }
+    }
+}
+
+
 
 int main (){
 
     int tabuleiro [tamtabuleiro][tamtabuleiro];
-    int i, j;
+    int posicao, i, j, l, c;     // Posicionando navios (horizontal, vertical, diagonal1, diagonal2)
+    int octaedroPequeno[tamanhoOctaedro][tamanhoOctaedro] = {0};
+
+
 
 
 
@@ -23,13 +96,11 @@ int main (){
    }
    
    }
-  // variaveis de controle para validação
-  int posicao, l, c;
-  
+
   
   //navio horizontal
 
-  int linhahorizontal = 2, colunahorizontal = 4;
+  int linhahorizontal = 1, colunahorizontal = 4;
   posicao = 1;
 
     for ( i = 0; i < tamnavio; i++)
@@ -57,7 +128,7 @@ int main (){
     }
     
     //Navio Vertical
-    int linhavertical = 5, colunavertical = 1;
+    int linhavertical = 5, colunavertical = 0;
     posicao = 1;
 
     for ( i = 0; i < tamnavio; i++)
@@ -85,7 +156,7 @@ int main (){
 
     // navio diagonal 1
 
-    int linhadiagonal1 = 0, colunadiagonal1 = 0;
+    int linhadiagonal1 = 1, colunadiagonal1 = 0;
     posicao = 1;
 
     for ( i = 0; i < tamnavio; i++)
@@ -113,7 +184,7 @@ int main (){
     }
 
     // navio diagonal 2
-    int linhadiagonal2 = 4, colunadiagonal2 = 5;
+    int linhadiagonal2 = 1, colunadiagonal2 = 9;
     posicao = 1;
     for ( i = 0; i < tamnavio; i++)
     {
@@ -138,26 +209,51 @@ int main (){
         printf("Não foi possivel posicionar o navio diagonal 2 .\n");
     }
 
+    // Matrizes de habilidades
+    int cone[tamanhoHabilidade][tamanhoHabilidade] = {0};
+    int cruz[tamanhoHabilidade][tamanhoHabilidade] = {0};
+    int octaedro[tamanhoHabilidade][tamanhoHabilidade] = {0};
+
+    // Criando CONE
+    for (i = 0; i < tamanhoHabilidade; i++) {
+        for (int j = 0; j < tamanhoHabilidade; j++) {
+            if (j >= tamanhoHabilidade / 2 - i && j <= tamanhoHabilidade / 2 + i) {
+                cone[i][j] = 1;
+            }
+        }
+    }
+
+    // Criando CRUZ
+    for (i = 0; i < tamanhoHabilidade; i++) {
+        for (int j = 0; j < tamanhoHabilidade; j++) {
+            if (i == tamanhoHabilidade / 2 || j == tamanhoHabilidade / 2) {
+                cruz[i][j] = 1;
+            }
+        }
+    }
+
+     // Criando OCTAEDRO 
+for (i = 0; i < tamanhoOctaedro; i++) {
+    for (int j = 0; j < tamanhoOctaedro; j++) {
+        if (abs(i - tamanhoOctaedro / 2) + abs(j - tamanhoOctaedro / 2) <= tamanhoOctaedro / 2) {
+            octaedroPequeno[i][j] = 1;
+        }
+    }
+}
+
+
+  // Aplicando habilidades no tabuleiro
+    aplicarHabilidade(tabuleiro, cone, 9, 2);       // canto inferior-esquerdo
+    aplicarHabilidade(tabuleiro, cruz, 4, 4);       // centro
+    aplicarHabilidade3x3(tabuleiro, octaedroPequeno, 7, 7);   // canto inferior direito
+
+
     // exibir o tabuleiro
     printf("\nTabuleiro Batalha Naval:\n\n");
-     printf("   "); // 3 espaços para alinhar com os números (2 dígitos + espaço extra)
-for (char letra = 'A'; letra < 'A' + tamtabuleiro; letra++) {
-    printf("%c ", letra);
-}
-printf("\n");
+         exibirTabuleiro(tabuleiro);
 
+    
 
-       for ( i = 0; i < tamtabuleiro; i++)
-      { printf("%2d ", i + 1);  // para colocar os numeros na coluna vertical
-       for ( j = 0; j < tamtabuleiro; j++)
-       {
-       printf("%d ", tabuleiro[i][j]);
-       }
-       printf("\n");
-
-
-      }
-      
 
 
 return 0;
